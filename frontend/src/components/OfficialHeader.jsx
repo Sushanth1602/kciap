@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 export default function OfficialHeader({ language, setLanguage, fontSize, setFontSize }) {
   const navigate = useNavigate()
   const location = useLocation()
+  const { user, profile, signOut } = useAuth()
   const [isSticky, setIsSticky] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -51,6 +53,49 @@ export default function OfficialHeader({ language, setLanguage, fontSize, setFon
     officerLogin: { en: 'Officer Login', kn: 'ಅಧಿಕಾರಿ ಲಾಗಿನ್' },
     govAccess: { en: 'Government Access', kn: 'ಸರ್ಕಾರಿ ಪ್ರವೇಶ' },
     searchPlaceholder: { en: 'Search portal...', kn: 'ಪೋರ್ಟಲ್ ಹುಡುಕಿ...' },
+  }
+
+  if (user) {
+    return (
+      <div className="w-full bg-[#070D19] text-white select-none py-3 px-6 border-b border-slate-900 shadow-lg">
+        <div className="max-w-7xl mx-auto flex justify-between items-center gap-4">
+          <div className="flex items-center gap-3">
+            <svg 
+              className="w-10 h-10 drop-shadow-sm flex-shrink-0" 
+              viewBox="0 0 200 200" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="100" cy="100" r="92" fill="#0B1F4D" stroke="#D4A017" strokeWidth="6" />
+              <circle cx="100" cy="100" r="76" fill="#1E40AF" />
+              <path d="M70 100 C70 85 85 75 100 85 C100 85 95 105 85 115 C80 120 70 115 70 100 Z" fill="#D4A017" />
+              <path d="M130 100 C130 85 115 75 100 85 C100 85 105 105 115 115 C120 120 130 115 130 100 Z" fill="#D4A017" />
+            </svg>
+            <div className="text-left leading-tight">
+              <span className="text-[9px] text-govgold font-bold tracking-wider uppercase block">Government of Karnataka</span>
+              <h1 className="text-xs md:text-sm font-black tracking-wide text-white uppercase">
+                Karnataka Crime Intelligence & Analytical Platform (KCIAP)
+              </h1>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {profile && (
+              <div className="text-right hidden sm:block leading-none">
+                <p className="text-[10px] font-bold text-white uppercase">{profile.full_name}</p>
+                <span className="text-[8px] text-govgold font-mono uppercase font-bold tracking-wider">{profile.role}</span>
+              </div>
+            )}
+            <button
+              onClick={() => signOut().then(() => navigate('/'))}
+              className="px-3 py-1.5 bg-red-950/50 border border-red-900/60 hover:bg-red-900/30 text-red-400 hover:text-white rounded-xl text-[10px] font-bold uppercase tracking-wider transition"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -121,12 +166,26 @@ export default function OfficialHeader({ language, setLanguage, fontSize, setFon
             <span className="text-slate-600">|</span>
 
             {/* Quick Portal Access */}
-            <div className="flex gap-2">
-              <button onClick={() => navigate('/citizen')} className="text-slate-300 hover:text-govgold transition">{t.citizenLogin[language]}</button>
-              <span className="text-slate-600">·</span>
-              <button onClick={() => navigate('/login')} className="text-slate-300 hover:text-govgold transition">{t.officerLogin[language]}</button>
-              <span className="text-slate-600">·</span>
-              <button onClick={() => navigate('/government')} className="text-slate-300 hover:text-govgold transition">{t.govAccess[language]}</button>
+            <div className="flex gap-2 items-center text-slate-300 text-xs">
+              {user ? (
+                <>
+                  <span className="text-govgold font-medium">
+                    {profile ? `${profile.full_name} (${profile.role})` : user.email}
+                  </span>
+                  <span className="text-slate-600">·</span>
+                  <button onClick={signOut} className="text-rose-400 hover:text-rose-300 transition font-semibold">
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button onClick={() => navigate('/citizen')} className="hover:text-govgold transition">{t.citizenLogin[language]}</button>
+                  <span className="text-slate-600">·</span>
+                  <button onClick={() => navigate('/login')} className="hover:text-govgold transition">{t.officerLogin[language]}</button>
+                  <span className="text-slate-600">·</span>
+                  <button onClick={() => navigate('/government')} className="hover:text-govgold transition">{t.govAccess[language]}</button>
+                </>
+              )}
             </div>
           </div>
         </div>

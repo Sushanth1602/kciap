@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "dev": "npm run dev --prefix frontend",
+    "backend": ".venv/bin/uvicorn backend.main:app --reload"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.4.0",
+    "@supabase/supabase-js": "^2.108.2",
+    "lucide-react": "^1.21.0",
+    "react-hook-form": "^7.80.0",
+    "react-router-dom": "^7.18.0",
+    "zod": "^4.4.3"
+  }
+}

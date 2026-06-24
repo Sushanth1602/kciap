@@ -9,7 +9,7 @@ from datetime import date, time, datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from .models import Base, Crime, Suspect, Victim
+from .models import Base, Crime, Suspect, Victim, Profile, Officer, Citizen, Complaint, CrimeReport, AnalyticsMetric, Notification
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DATASETS_DIR = ROOT_DIR / "datasets"
@@ -19,7 +19,14 @@ CSV_PATH = DATASETS_DIR / "crime_data.csv"
 DB_PATH = DATABASE_DIR / "crime.db"
 DATABASE_URL = os.environ.get("DATABASE_URL", f"sqlite:///{DB_PATH}")
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+# cross-compatibility engine creation
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+else:
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    engine = create_engine(DATABASE_URL)
+
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 
@@ -32,6 +39,11 @@ def get_db() -> Generator:
 
 
 def init_db() -> None:
+    # Ensure all tables are created on PostgreSQL/Supabase
+    if not DATABASE_URL.startswith("sqlite"):
+        Base.metadata.create_all(bind=engine)
+        return
+
     if DB_PATH.exists() and DB_PATH.stat().st_size > 0:
         return
 

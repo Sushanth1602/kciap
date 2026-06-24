@@ -9,6 +9,7 @@ export default {
         govnavy: '#0B1F4D',
         govblue: '#1E40AF',
         govgold: '#D4A017',
+        govpurple: '#5B21B6',
       }
     },
   },
