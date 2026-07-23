@@ -1,0 +1,3 @@
+@echo off
+echo Starting Crime Intelligence Platform (Backend + Frontend)...
+npm start

@@ -11,35 +11,47 @@ Prototype for Karnataka State Police (KSP) crime analytics and intelligence.
 - `notebooks/` - Analytics notebooks and experiment notes
 - `docs/` - Supporting project documentation
 
-## Installation
+## Quick Start (Run Both Frontend & Backend with 1 Command)
+
+From the project root directory (`kciap`), run:
+
+```bash
+npm start
+```
+*(or `npm run dev`)*
+
+This concurrently starts both:
+- **Backend API**: `http://127.0.0.1:8000`
+- **Frontend UI**: `http://localhost:5173`
+
+---
+
+## Running Services Individually
 
 ### Backend
 
-1. Create and activate a Python 3.11+ virtual environment.
-2. Install dependencies:
+1. Install backend dependencies (if not already installed):
    ```bash
-   cd backend
-   python -m pip install -r requirements.txt
+   python -m pip install -r backend/requirements.txt
    ```
-3. Generate data and initialize the SQLite database:
+2. Start the FastAPI backend:
    ```bash
-   python generate_data.py
-   ```
-4. Start the API:
-   ```bash
-   uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+   npm run backend
+   # Or directly:
+   python -m uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
    ```
 
 ### Frontend
 
-1. Install dependencies:
+1. Install frontend dependencies:
    ```bash
-   cd frontend
-   npm install
+   npm install --prefix frontend
    ```
-2. Start the UI:
+2. Start the Vite UI:
    ```bash
-   npm run dev
+   npm run frontend
+   # Or directly:
+   npm run dev --prefix frontend
    ```
 
 ## API Endpoints
