@@ -1,0 +1,33 @@
+name: BuildAI OS CI Pipeline
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js Environment
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Install Project Dependencies
+      run: npm install
+
+    - name: Run ESLint Linter Check
+      run: npm run lint
+
+    - name: Run Build Compilation
+      run: npm run build
+
+    - name: Run Test Suites
+      run: npm test

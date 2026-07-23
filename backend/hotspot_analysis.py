@@ -4,7 +4,10 @@ import numpy as np
 from sklearn.cluster import DBSCAN
 from sqlalchemy.orm import Session
 
-from .models import Crime
+try:
+    from .models import Crime
+except ImportError:
+    from models import Crime
 
 
 def detect_hotspots(db: Session, eps: float = 0.04, min_samples: int = 6) -> dict[str, list[dict[str, float]]]:

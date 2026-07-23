@@ -6,7 +6,10 @@ import networkx as nx
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-from .models import Crime
+try:
+    from .models import Crime
+except ImportError:
+    from models import Crime
 
 
 def build_suspect_network(db: Session, suspect_id: str) -> dict[str, Any]:

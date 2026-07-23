@@ -7,7 +7,10 @@ import pandas as pd
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from .models import Crime
+try:
+    from .models import Crime
+except ImportError:
+    from models import Crime
 
 
 def load_crime_dataframe(db: Session) -> pd.DataFrame:

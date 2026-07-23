@@ -9,7 +9,10 @@ from datetime import date, time, datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from .models import Base, Crime, Suspect, Victim, Profile, Officer, Citizen, Complaint, CrimeReport, AnalyticsMetric, Notification
+try:
+    from .models import Base, Crime, Suspect, Victim, Profile, Officer, Citizen, Complaint, CrimeReport, AnalyticsMetric, Notification
+except ImportError:
+    from models import Base, Crime, Suspect, Victim, Profile, Officer, Citizen, Complaint, CrimeReport, AnalyticsMetric, Notification
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DATASETS_DIR = ROOT_DIR / "datasets"

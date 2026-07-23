@@ -6,8 +6,12 @@ from typing import Any
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from .models import Crime
-from .repeat_offenders import top_repeat_offenders
+try:
+    from .models import Crime
+    from .repeat_offenders import top_repeat_offenders
+except ImportError:
+    from models import Crime
+    from repeat_offenders import top_repeat_offenders
 
 CRIME_TYPES = [
     "theft",

@@ -3,7 +3,10 @@ from __future__ import annotations
 from sqlalchemy import func, case, desc
 from sqlalchemy.orm import Session
 
-from .models import Crime
+try:
+    from .models import Crime
+except ImportError:
+    from models import Crime
 
 
 def top_repeat_offenders(db: Session, top_n: int = 20) -> list[dict[str, float]]:

@@ -9,8 +9,12 @@ import sys
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT_DIR))
 
-from .database import CSV_PATH, DB_PATH
-from .database import init_db as init_database
+try:
+    from .database import CSV_PATH, DB_PATH
+    from .database import init_db as init_database
+except ImportError:
+    from database import CSV_PATH, DB_PATH
+    from database import init_db as init_database
 
 CRIME_TYPES = [
     "Theft",

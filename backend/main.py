@@ -10,18 +10,32 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-from . import analytics
-from . import database
-from . import hotspot_analysis
-from . import network_analysis
-from . import query_engine
-from . import repeat_offenders
-from .models import Crime, Profile, Officer, Citizen, Complaint, CrimeReport, Notification
-from .schemas import (
-    CrimeSchema, AnalyticsSummary, HotspotPoint, QueryRequest, QueryResponse, RepeatOffender,
-    ProfileCreate, ProfileSchema, OfficerCreate, OfficerSchema, CitizenCreate, CitizenSchema,
-    ComplaintCreate, ComplaintSchema, CrimeReportCreate, CrimeReportSchema, NotificationSchema
-)
+try:
+    from . import analytics
+    from . import database
+    from . import hotspot_analysis
+    from . import network_analysis
+    from . import query_engine
+    from . import repeat_offenders
+    from .models import Crime, Profile, Officer, Citizen, Complaint, CrimeReport, Notification
+    from .schemas import (
+        CrimeSchema, AnalyticsSummary, HotspotPoint, QueryRequest, QueryResponse, RepeatOffender,
+        ProfileCreate, ProfileSchema, OfficerCreate, OfficerSchema, CitizenCreate, CitizenSchema,
+        ComplaintCreate, ComplaintSchema, CrimeReportCreate, CrimeReportSchema, NotificationSchema
+    )
+except ImportError:
+    import analytics
+    import database
+    import hotspot_analysis
+    import network_analysis
+    import query_engine
+    import repeat_offenders
+    from models import Crime, Profile, Officer, Citizen, Complaint, CrimeReport, Notification
+    from schemas import (
+        CrimeSchema, AnalyticsSummary, HotspotPoint, QueryRequest, QueryResponse, RepeatOffender,
+        ProfileCreate, ProfileSchema, OfficerCreate, OfficerSchema, CitizenCreate, CitizenSchema,
+        ComplaintCreate, ComplaintSchema, CrimeReportCreate, CrimeReportSchema, NotificationSchema
+    )
 
 app = FastAPI(
     title="Crime Intelligence & Analytical Platform",
